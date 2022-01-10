@@ -19,7 +19,7 @@ jobs:
           token: ${{ secrets.DO_ACCESS_TOKEN }}
 
       # Update app
-      - run: doctl apps update --spec do.yaml ${{ secrets.DO_APP_ID }}
+      - run: doctl apps update --spec do.yaml ${{ secrets.DO_APP_ID }} --wait
 
       # Deploy
       - run: doctl apps create-deployment ${{ secrets.DO_APP_ID }} --wait

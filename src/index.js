@@ -91,7 +91,7 @@ app.get('/', async (req) => ({
 
 const start = async () => {
   try {
-    await app.listen(process.env.PORT || 8080)
+    await app.listen(process.env.PORT || 8080, '0.0.0.0')
   } catch (err) {
     app.log.error(err)
     process.exit(1)
