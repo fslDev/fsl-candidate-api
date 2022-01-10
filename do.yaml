@@ -4,16 +4,16 @@ alerts:
 name: fsl-candidate-api
 region: sfo
 services:
-  - dockerfile_path: Dockerfile
-    github:
-      branch: main
-      repo: fslDev/fsl-candidate-api
-    http_port: 8080
-    instance_count: 1
-    instance_size_slug: basic-xxs
-    name: api
-    routes:
-      - path: /
+  # - dockerfile_path: Dockerfile
+  #   github:
+  #     branch: main
+  #     repo: fslDev/fsl-candidate-api
+  #   http_port: 8080
+  #   instance_count: 1
+  #   instance_size_slug: basic-xxs
+  #   name: api
+  #   routes:
+  #     - path: /
   - environment_slug: node-js
     github:
       branch: main
@@ -21,7 +21,7 @@ services:
     http_port: 8080
     instance_count: 1
     instance_size_slug: basic-xxs
-    name: sample-nodejs
+    name: api
     routes:
     - path: /
     run_command: npm start
