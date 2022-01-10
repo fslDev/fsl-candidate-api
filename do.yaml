@@ -6,7 +6,7 @@ region: sfo
 services:
   - dockerfile_path: Dockerfile
     github:
-      branch: master
+      branch: main
       repo: fslDev/fsl-candidate-api
     http_port: 8080
     instance_count: 1
