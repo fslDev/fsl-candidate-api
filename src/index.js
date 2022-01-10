@@ -40,6 +40,7 @@ app.route({
   method: 'POST',
   url: '/v1/address',
   schema: {
+    tags: ['Address'],
     body: {
       type: 'object',
       required: ['name', 'address1', 'city', 'state', 'zip'],
@@ -74,6 +75,7 @@ app.route({
   method: 'GET',
   url: '/v1/address',
   schema: {
+    tags: ['Address'],
     querystring: {
       type: 'object',
       properties: { name: { type: 'string' } },
@@ -96,6 +98,7 @@ app.route({
   method: 'PATCH',
   url: '/v1/address/:id',
   schema: {
+    tags: ['Address'],
     body: {
       type: 'object',
       properties: {
@@ -130,6 +133,9 @@ app.route({
 })
 
 app.route({
+  schema: {
+    tags: ['Address'],
+  },
   method: 'DELETE',
   url: '/v1/address/:id',
   handler: async (req) => {
