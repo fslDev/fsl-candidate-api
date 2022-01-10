@@ -1,6 +1,6 @@
 # fsl-candidate-api
 
-> Code for Fitshipper's Frontend hiring test.
+> Code for the API used on Fitshipper's Frontend hiring challenge.
 
 ## License
 
