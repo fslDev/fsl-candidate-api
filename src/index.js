@@ -84,6 +84,11 @@ app.route({
   },
 })
 
+app.get('/', async (req) => ({
+  live: true,
+  message: 'Check /documentation for more information!',
+}))
+
 const start = async () => {
   try {
     await app.listen(process.env.PORT || 8080)
