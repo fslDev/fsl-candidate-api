@@ -2,13 +2,17 @@
   "name": "fsl-candidate-api",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "src/index.js",
   "scripts": {
     "start": "node .",
+    "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "fastify": "^3.25.3"
+    "fastify": "^3.25.3",
+    "fastify-swagger": "^4.13.1",
+    "uuid": "^8.3.2"
   },
   "prettier": {
     "semi": false,
@@ -17,5 +21,12 @@
   "volta": {
     "node": "14.18.2",
     "npm": "8.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": {
+    "watch": "src/",
+    "ext": "js,json,ts"
   }
 }
