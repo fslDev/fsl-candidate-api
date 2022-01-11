@@ -1,8 +1,10 @@
 import Fastify from 'fastify'
 import FastifySwagger from 'fastify-swagger'
 import httpErrors from 'http-errors'
+import _ from 'lodash'
 
 const { NotFound } = httpErrors
+const { orderBy } = _
 
 import { docs } from './docs.js'
 import { defaultAddresses } from './data.js'
@@ -94,19 +96,25 @@ app.route({
         name: { type: 'string' },
         address1: { type: 'string' },
         state: { type: 'string' },
+        city: { type: 'string' },
+        orderBy: { type: 'string', enum: ['id', 'name', 'address1', 'state', 'city'], default: 'id' },
+        direction: { type: 'string', enum: ['asc', 'desc'], default: 'desc' },
       },
       additionalProperties: false,
     },
     response: { 200: { type: 'array', items: { $ref: 'Address#' } } },
   },
   handler: async (req) => {
-    const filter = req.query
+    const opts = req.query
 
     let result = db.address.filter((a) => a.fromIp === req.ip || !a.fromIp).filter((a) => a.deleted !== true)
 
-    if (filter.name) result = result.filter((a) => lowerCaseIncludes(a.name, filter.name))
-    if (filter.address1) result = result.filter((a) => lowerCaseIncludes(a.address1, filter.address1))
-    if (filter.state) result = result.filter((a) => lowerCaseIncludes(a.state, filter.state))
+    if (opts.name) result = result.filter((a) => lowerCaseIncludes(a.name, opts.name))
+    if (opts.address1) result = result.filter((a) => lowerCaseIncludes(a.address1, opts.address1))
+    if (opts.state) result = result.filter((a) => lowerCaseIncludes(a.state, opts.state))
+    if (opts.city) result = result.filter((a) => lowerCaseIncludes(a.city, opts.city))
+
+    result = orderBy(result, opts.orderBy, opts.direction)
 
     return result ?? []
   },

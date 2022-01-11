@@ -18,6 +18,7 @@
     "fastify": "^3.25.3",
     "fastify-swagger": "^4.13.1",
     "http-errors": "^2.0.0",
+    "lodash": "^4.17.21",
     "uuid": "^8.3.2"
   },
   "prettier": {
