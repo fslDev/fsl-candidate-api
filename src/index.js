@@ -14,6 +14,8 @@ const db = {
   address: [...defaultAddresses],
 }
 
+const lowerCaseIncludes = (str, search) => str.toLowerCase().includes(search)
+
 app.get('/', async (req) => ({
   live: true,
   message: 'Check /documentation for more information!',
@@ -75,8 +77,7 @@ app.route({
   handler: async (req) => {
     const saved = db.address[req.params.id]
 
-    if (!saved || saved.fromIp !== req.ip || saved.deleted)
-      throw new NotFound('Address not found')
+    if (!saved || saved.fromIp !== req.ip || saved.deleted) throw new NotFound('Address not found')
 
     return saved
   },
@@ -89,7 +90,11 @@ app.route({
     tags: ['Address'],
     querystring: {
       type: 'object',
-      properties: { name: { type: 'string' } },
+      properties: {
+        name: { type: 'string' },
+        address1: { type: 'string' },
+        state: { type: 'string' },
+      },
       additionalProperties: false,
     },
     response: { 200: { type: 'array', items: { $ref: 'Address#' } } },
@@ -97,11 +102,11 @@ app.route({
   handler: async (req) => {
     const filter = req.query
 
-    let result = db.address
-      .filter((a) => a.fromIp === req.ip || !a.fromIp)
-      .filter((a) => a.deleted !== true)
+    let result = db.address.filter((a) => a.fromIp === req.ip || !a.fromIp).filter((a) => a.deleted !== true)
 
-    if (filter.name) result = result.filter((a) => a.name.includes(filter.name))
+    if (filter.name) result = result.filter((a) => lowerCaseIncludes(a.name, filter.name))
+    if (filter.address1) result = result.filter((a) => lowerCaseIncludes(a.address1, filter.address1))
+    if (filter.state) result = result.filter((a) => lowerCaseIncludes(a.state, filter.state))
 
     return result ?? []
   },
@@ -129,8 +134,7 @@ app.route({
     const id = req.params.id
     const saved = db.address[id]
 
-    if (!saved || saved.fromIp !== req.ip || saved.deleted)
-      throw new NotFound('Address not found')
+    if (!saved || saved.fromIp !== req.ip || saved.deleted) throw new NotFound('Address not found')
 
     const data = { ...saved, ...req.body, id }
 
@@ -148,8 +152,7 @@ app.route({
     const id = Number(req.params.id)
     const saved = db.address[id]
 
-    if (!saved || saved.fromIp !== req.ip || saved.deleted)
-      throw new NotFound('Address not found')
+    if (!saved || saved.fromIp !== req.ip || saved.deleted) throw new NotFound('Address not found')
 
     db.address[id] = { ...saved, deleted: true }
 
