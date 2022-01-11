@@ -1,4 +1,3 @@
-import * as uuid from 'uuid'
 import Fastify from 'fastify'
 import FastifySwagger from 'fastify-swagger'
 import httpErrors from 'http-errors'
@@ -6,12 +5,13 @@ import httpErrors from 'http-errors'
 const { NotFound } = httpErrors
 
 import { docs } from './docs.js'
+import { defaultAddresses } from './data.js'
 
 const app = Fastify({ logger: true })
 
 // In-memory database
 const db = {
-  address: [],
+  address: [...defaultAddresses],
 }
 
 app.get('/', async (req) => ({
@@ -75,7 +75,8 @@ app.route({
   handler: async (req) => {
     const saved = db.address[req.params.id]
 
-    if (!saved) throw new NotFound('Address not found')
+    if (!saved || saved.fromIp !== req.ip || saved.deleted)
+      throw new NotFound('Address not found')
 
     return saved
   },
@@ -96,7 +97,9 @@ app.route({
   handler: async (req) => {
     const filter = req.query
 
-    let result = db.address.filter((a) => a.fromIp === req.ip)
+    let result = db.address
+      .filter((a) => a.fromIp === req.ip || !a.fromIp)
+      .filter((a) => a.deleted !== true)
 
     if (filter.name) result = result.filter((a) => a.name.includes(filter.name))
 
@@ -126,7 +129,8 @@ app.route({
     const id = req.params.id
     const saved = db.address[id]
 
-    if (!saved) throw new NotFound('Address not found')
+    if (!saved || saved.fromIp !== req.ip || saved.deleted)
+      throw new NotFound('Address not found')
 
     const data = { ...saved, ...req.body, id }
 
@@ -142,8 +146,12 @@ app.route({
   url: '/v1/address/:id',
   handler: async (req) => {
     const id = Number(req.params.id)
+    const saved = db.address[id]
 
-    db.address = [...db.address.filter((a) => a.id !== id)]
+    if (!saved || saved.fromIp !== req.ip || saved.deleted)
+      throw new NotFound('Address not found')
+
+    db.address[id] = { ...saved, deleted: true }
 
     return {}
   },

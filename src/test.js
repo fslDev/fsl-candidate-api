@@ -15,6 +15,7 @@ async function test() {
     zip: '12345',
   }
 
+  // Post
   const postRes = await request.post('/v1/address', address)
 
   const { id, ...data } = postRes.data
@@ -22,11 +23,13 @@ async function test() {
   assert.deepEqual(data, address)
   assert.ok(id)
 
+  // Get
   const getRes = await request.get('/v1/address')
+  const len1 = Number(getRes.data.length)
 
-  // assert.deepEqual(getRes.data, [{ id, ...data }])
   assert.ok(getRes.data.length)
 
+  // Patch
   const patchRes = await request.patch(`/v1/address/${id}`, {
     name: 'New Name',
   })
@@ -38,7 +41,7 @@ async function test() {
 
   const getRes2 = await request.get('/v1/address')
 
-  assert.deepEqual(getRes2.data, [])
+  assert.deepEqual(getRes2.data.length, len1)
 }
 
 test()
