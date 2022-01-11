@@ -1,5 +1,6 @@
 import Fastify from 'fastify'
 import FastifySwagger from 'fastify-swagger'
+import FastifyCors from 'fastify-cors'
 import httpErrors from 'http-errors'
 import _ from 'lodash'
 
@@ -17,6 +18,8 @@ const db = {
 }
 
 const lowerCaseIncludes = (str, search) => str.toLowerCase().includes(search)
+
+app.register(FastifyCors, { origin: '*' })
 
 app.get('/', async (req) => ({
   live: true,

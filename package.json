@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "fastify": "^3.25.3",
+    "fastify-cors": "^6.0.2",
     "fastify-swagger": "^4.13.1",
     "http-errors": "^2.0.0",
     "lodash": "^4.17.21",
