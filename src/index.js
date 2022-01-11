@@ -25,7 +25,7 @@ app.addSchema({
   $id: 'Address',
   type: 'object',
   properties: {
-    id: { type: 'string' },
+    id: { type: 'integer' },
     name: { type: 'string' },
     address1: { type: 'string' },
     address2: { type: 'string' },
@@ -59,15 +59,25 @@ app.route({
     },
   },
   handler: async (req) => {
-    const data = {
-      ...req.body,
-      id: uuid.v4(),
-      fromIp: req.ip,
-    }
+    const id = db.address.length
+    const data = { ...req.body, id, fromIp: req.ip }
 
     db.address.push(data)
 
     return data
+  },
+})
+
+app.route({
+  method: 'GET',
+  url: '/v1/address/:id',
+  schema: { tags: ['Address'], response: { 200: { $ref: 'Address#' } } },
+  handler: async (req) => {
+    const saved = db.address[req.params.id]
+
+    if (!saved) throw new NotFound('Address not found')
+
+    return saved
   },
 })
 
@@ -114,32 +124,24 @@ app.route({
   },
   handler: async (req) => {
     const id = req.params.id
-
-    const saved = db.address.find((a) => a.id === id)
+    const saved = db.address[id]
 
     if (!saved) throw new NotFound('Address not found')
 
     const data = { ...saved, ...req.body, id }
 
-    for (const [index, addr] of Object.entries(db.address)) {
-      if (addr.id === id) {
-        db.address[index] = data
-        return db.address[index]
-      }
-    }
+    db.address[id] = data
 
-    return {}
+    return db.address[id]
   },
 })
 
 app.route({
-  schema: {
-    tags: ['Address'],
-  },
+  schema: { tags: ['Address'] },
   method: 'DELETE',
   url: '/v1/address/:id',
   handler: async (req) => {
-    const id = req.params.id
+    const id = Number(req.params.id)
 
     db.address = [...db.address.filter((a) => a.id !== id)]
 
