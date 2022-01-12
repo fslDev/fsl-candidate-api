@@ -6,7 +6,7 @@ You will be building a UI to `CREATE`, `READ`, `UPDATE`, and `DELETE` US based `
 
 There is an `Addresses` API available at [https://fsl-candidate-api-vvfym.ondigitalocean.app](url).
 
-You can view the API docs [here](https://fsl-candidate-api-vvfym.ondigitalocean.app/documentation/json).  
+You can view the API docs [here](https://fsl-candidate-api-vvfym.ondigitalocean.app/documentation/static/index.html).  
 
 You should use modern React (hooks, not Classes) and [Tailwind CSS](https://tailwindcss.com/) to style the application.
 
