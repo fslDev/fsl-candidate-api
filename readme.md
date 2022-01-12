@@ -4,7 +4,7 @@
 
 You will be building a UI to `CREATE`, `READ`, `UPDATE`, and `DELETE` US based `addresses`. 
 
-There is an `Addresses` API available at [https://fsl-candidate-api-vvfym.ondigitalocean.app](url).
+There is an `Addresses` API available at `https://fsl-candidate-api-vvfym.ondigitalocean.app`.
 
 You can view the API docs [here](https://fsl-candidate-api-vvfym.ondigitalocean.app/documentation/static/index.html).  
 
