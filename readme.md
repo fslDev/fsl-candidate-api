@@ -12,7 +12,7 @@ You should use modern React (hooks, not Classes) and [Tailwind CSS](https://tail
 
 We ask that you spend no more than 2 hours on the challenge. It is not expected you will finish the entire challenge, but we'd like to see how far you can get in the allotted time.  
 
-Your work should be in a Github repo. When you are done, email the link with the repo to: `larson@fitshipper.com`
+Your work should be in a Github repo. When you are done, email the link with the repo to: `candidates@fitshipper.com`
 
 
 ### Task 1
